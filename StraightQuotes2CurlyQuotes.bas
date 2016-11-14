@@ -1,4 +1,5 @@
 sub StraightQuotes2CurlyQuotes
+' (c) Júlio Reis, 2016 – License: GPL v3. See LICENSE.md or LICENSE.txt
 ' Kudos to David for main code: https://gist.github.com/dajare/3924560
 ' Kudos to Villeroy for simpler, better find patterns:
 '	https://forum.openoffice.org/en/forum/viewtopic.php?f=30&t=39902

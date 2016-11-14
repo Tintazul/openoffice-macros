@@ -1,5 +1,7 @@
 ' subCountSubheadings displays the count of all 2nd-level headings for each 1st-level heading
 ' used to get stats on a document with lots of heading 2’s
+' (c) Júlio Reis, 2016 – License: GPL v3. See LICENSE.md or LICENSE.txt
+
 Sub subCountSubheadings()
 	Dim oDoc as Object, sText as String, sHeading1 as String
 	Dim iHeading1 as Integer, iSubheadings as Integer

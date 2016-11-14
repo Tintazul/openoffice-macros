@@ -155,6 +155,10 @@ Function fnIsOutlineInArray ( oFragment as Object, theString as String, _
 	Dim sNumberingPart as String, sTextPart as String, sProposedURL as String
 	Dim bNumberingMatches as Boolean, bTextMatches as Boolean
 	Dim sMsg as String, iChoice as Integer
+	
+	Dim bAutoFixOutlineNumbering as Boolean
+	bAutoFixOutlineNumbering = True ' fix outline numbering in link without asking anything
+	
 	' 1st step: split numbering from string part
 	iSplit = fnNumberingSplitIndex(theString)
 	sNumberingPart = Left(theString, iSplit)
@@ -200,25 +204,30 @@ Function fnIsOutlineInArray ( oFragment as Object, theString as String, _
 		' we have a text match
 		If iNumberingIndex = -1 Then
 			' we have a match on text but not on numbering
-			sProposedURL = sOutLineNumbering(iTextIndex) & sTextPart
-			sMsg = "Warning: Match on link text but not on outline numbering" & Chr(13) _
-				& "Link text: " & oFragment.String & Chr(13) _
-				& theString & " – existing link" & Chr(13) _
-				& sProposedURL & " – existing anchor" & Chr(13) & Chr(13) _
-				& "‘Yes’ to fix link outline numbering, ‘No’ to skip fix and continue checking, ‘Cancel’ to stop processing"
-			iChoice = MsgBox( sMsg, 48+3,  sDialogTitle)
-			Select Case iChoice
-			Case 6:
-				' yes
+			If bAutoFixOutlineNumbering Then
+				' fix outline numbering in link automatically, without asking anything
 				oFragment.HyperlinkURL = sProposedURL
-				fnIsOutlineInArray = True
-			Case 7:
-				' no
-				fnIsOutlineInArray = True
-			Case 2:
-				' cancel
-				fnIsOutlineInArray = False
-			End Select
+			Else
+				sProposedURL = sOutLineNumbering(iTextIndex) & sTextPart
+				sMsg = "Warning: Match on link text but not on outline numbering" & Chr(13) _
+					& "Link text: " & oFragment.String & Chr(13) _
+					& theString & " – existing link" & Chr(13) _
+					& sProposedURL & " – existing anchor" & Chr(13) & Chr(13) _
+					& "‘Yes’ to fix link outline numbering, ‘No’ to skip fix and continue checking, ‘Cancel’ to stop processing"
+				iChoice = MsgBox( sMsg, 48+3,  sDialogTitle)
+				Select Case iChoice
+				Case 6:
+					' yes
+					oFragment.HyperlinkURL = sProposedURL
+					fnIsOutlineInArray = True
+				Case 7:
+					' no
+					fnIsOutlineInArray = True
+				Case 2:
+					' cancel
+					fnIsOutlineInArray = False
+				End Select
+			End If
 		Else
 			' double match! all's well!
 			fnIsOutlineInArray = True
